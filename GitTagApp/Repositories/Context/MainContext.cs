@@ -1,5 +1,4 @@
-﻿using System;
-using GitTagApp.Entities;
+﻿using GitTagApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -30,6 +29,8 @@ namespace GitTagApp.Repositories.Context
                 .HasOne<User>(u => u.User)
                 .WithMany(g => g.GitRepositories)
                 .HasForeignKey(u => u.UserId);
+            
+            base.OnModelCreating(modelBuilder);
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -37,7 +38,7 @@ namespace GitTagApp.Repositories.Context
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .UseSqlServer(Configuration.GetConnectionString("GithubOauth"));
+                    .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309");
             }
         }
     }
