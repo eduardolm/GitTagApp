@@ -31,9 +31,9 @@ namespace GitTagApp.Repositories.Context
                 return;
             }
             
-            DataFileNames.Add(typeof(User), $@"..\ErrorCentral.Test\FakeData{Path.DirectorySeparatorChar}users.json");
-            DataFileNames.Add(typeof(GitRepository), $@"..\ErrorCentral.Test\FakeData{Path.DirectorySeparatorChar}environments.json");
-            DataFileNames.Add(typeof(Tag), $@"..\ErrorCentral.Test\FakeData{Path.DirectorySeparatorChar}layers.json");
+            DataFileNames.Add(typeof(User), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}users.json");
+            DataFileNames.Add(typeof(GitRepository), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}environments.json");
+            DataFileNames.Add(typeof(Tag), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}layers.json");
 
             FillWithAll();
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GitTagApp.Interfaces;
 
 namespace GitTagApp.Entities
 {
