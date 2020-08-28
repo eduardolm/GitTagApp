@@ -8,6 +8,6 @@ namespace GitTagApp.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public virtual IList<GitRepositoryTag> GitRepositoryTags { get; set; }
+        public virtual IList<GitRepoTag> GitRepoTags { get; set; }
     }
 }

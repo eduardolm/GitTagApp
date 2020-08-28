@@ -18,16 +18,17 @@ namespace GitTagApp.Repositories.Context
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<GitRepository> GitRepositories { get; set; }
+        public DbSet<GitRepo> GitRepos { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<GitRepoTag> GitRepoTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GitRepositoryTag>().HasKey(gt => new {gt.GitRepositoryId, gt.TagId});
+            modelBuilder.Entity<GitRepoTag>().HasKey(gt => new {gt.GitRepoId, gt.TagId});
 
-            modelBuilder.Entity<GitRepository>()
+            modelBuilder.Entity<GitRepo>()
                 .HasOne<User>(u => u.User)
-                .WithMany(g => g.GitRepositories)
+                .WithMany(g => g.GitRepos)
                 .HasForeignKey(u => u.UserId);
             
             base.OnModelCreating(modelBuilder);

@@ -32,7 +32,7 @@ namespace GitTagApp.Repositories.Context
             }
             
             DataFileNames.Add(typeof(User), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}users.json");
-            DataFileNames.Add(typeof(GitRepository), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}environments.json");
+            DataFileNames.Add(typeof(GitRepo), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}environments.json");
             DataFileNames.Add(typeof(Tag), $@"..\GitTagApp.Test\FakeData{Path.DirectorySeparatorChar}layers.json");
 
             FillWithAll();
@@ -41,7 +41,7 @@ namespace GitTagApp.Repositories.Context
         public static void FillWithAll()
         {
             FillWith<User>();
-            FillWith<GitRepository>();
+            FillWith<GitRepo>();
             FillWith<Tag>();
         }
         

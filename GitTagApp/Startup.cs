@@ -2,7 +2,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using GitTagApp.Interfaces;
 using GitTagApp.Repositories.Context;
+using GitTagApp.Repositories.GenericRepository;
+using GitTagApp.Services.GenericService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -28,8 +31,12 @@ namespace GitTagApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<MainContext>(opt => opt
                 .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309"));
+            
+            services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             
             services.AddRazorPages();
 
