@@ -1,0 +1,16 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="row">
+     @if (!User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Login" asp-controller="Login" class="btn btn-outline-primary">Log In with GitHub</a>
+    }
+     else
+     {
+         
+     }
+</div>
