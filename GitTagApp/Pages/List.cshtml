@@ -1,0 +1,56 @@
+﻿@page
+@model ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1 class="text-black-50">
+    List
+</h1>
+<p>
+    Here, we can list both all repositories and starred repositories.
+    The list also shows associated tags added to each of the starred repositories.
+</p>
+
+<div class="accordion" id="accordion">
+    <div class="card">
+        <div class="card-header" id="heading-1">
+            <h5 class="mb-0">
+                <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapse-repos" aria-expanded="false" aria-controls="collapse-repos">
+                    Repositories
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-repos" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion">
+            <div class="card-body">
+                <ul>
+                    @foreach (var repo in Model.Repositories)
+                    {
+                        <li><a href="@repo.HtmlUrl">@repo.FullName - @repo.Owner.Id</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="heading-2">
+            <h5 class="mb-0">
+                <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapse-starred" aria-expanded="false" aria-controls="collapse-starred">
+                    Starred Repositories
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-starred" class="collapse" aria-labelledby="heading-2" data-parent="#accordion">
+            <div class="card-body">
+                <ul>
+                    @foreach (var repo in Model.StarredRepos)
+                    {
+                        <li><a href="@repo.HtmlUrl">@repo.FullName - @repo.Owner.Id</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,27 @@
+﻿@page
+@model AboutModel
+@{
+    ViewData["Title"] = "About";
+}
+<h1 style="border-bottom: 1px solid #95999c; margin-bottom: 1rem;">@ViewData["Title"]</h1>
+
+<h4>Scope</h4>
+
+<p>
+    This app was developed to make it easier for Github users to find starred repositories.
+    The app fetches the repositories starred by the user and allows the user to add tags to those repositories.
+    The user can also search repositories by tags, edit and delete tags.
+</p>
+
+<h4>Technologies</h4>
+
+<p>
+    The app was developed using .NET Core with Razor Pages.
+    Github sign-in was done using Oauth 2.
+</p>
+
+<div class="container-fluid">
+    <img src="images/768px-.NET_Core_Logo.svg.png" style="height: 20%; width: 20%;"/>
+    <img src="images/oauth2-640x410.jpg" style="height: 35%; width: 35%;" />
+    <img src="images/GitHub-Mark-120px-plus.png" />
+</div>

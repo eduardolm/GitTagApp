@@ -1,7 +1,9 @@
-﻿namespace GitTagApp.Interfaces
+﻿using System;
+
+namespace GitTagApp.Interfaces
 {
     public interface IBaseEntity
     {
-        int Id { get; set; }
+        long Id { get; set; }
     }
 }

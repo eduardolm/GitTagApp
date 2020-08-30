@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GitTagApp.Repositories.Context;
 using GitTagApp.Interfaces;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace GitTagApp.Repositories.GenericRepository
@@ -21,13 +22,17 @@ namespace GitTagApp.Repositories.GenericRepository
             return _dbContext.Set<T>().ToList();
         }
 
-        public T GetById(int id)
+        public T GetById(long id)
         {
             return _dbContext.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 
         public void Create(T entity)
         {
+            var checkId = _dbContext.Set<T>().Find(entity.Id);
+            if (checkId != null) return;
+            
+            DetachLocal(_ => _.Id == entity.Id);
             _dbContext.Set<T>().Add(entity);
             _dbContext.SaveChanges();
         }
@@ -39,7 +44,7 @@ namespace GitTagApp.Repositories.GenericRepository
             _dbContext.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             var entity = _dbContext.Set<T>().FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(entity);

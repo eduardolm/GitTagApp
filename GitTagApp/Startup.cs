@@ -3,8 +3,10 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using GitTagApp.Interfaces;
+using GitTagApp.Repositories;
 using GitTagApp.Repositories.Context;
 using GitTagApp.Repositories.GenericRepository;
+using GitTagApp.Services;
 using GitTagApp.Services.GenericService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -37,6 +39,12 @@ namespace GitTagApp
             
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IGitRepoRepository, GitRepoRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IGitRepoService, GitRepoService>();
             
             services.AddRazorPages();
 

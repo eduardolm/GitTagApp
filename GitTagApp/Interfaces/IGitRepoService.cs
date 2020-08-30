@@ -4,6 +4,5 @@ namespace GitTagApp.Interfaces
 {
     public interface IGitRepoService : IGenericService<GitRepo>
     {
-        
     }
 }

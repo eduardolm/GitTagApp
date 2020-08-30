@@ -27,9 +27,23 @@ namespace GitTagApp.Repositories.Context
             modelBuilder.Entity<GitRepoTag>().HasKey(gt => new {gt.GitRepoId, gt.TagId});
 
             modelBuilder.Entity<GitRepo>()
+                .HasKey(x => x.Id);
+            
+            modelBuilder.Entity<GitRepo>()
+                .Property(x => x.Id)
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<GitRepo>()
                 .HasOne<User>(u => u.User)
                 .WithMany(g => g.GitRepos)
                 .HasForeignKey(u => u.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasKey(x => x.Id);
+            
+            modelBuilder.Entity<User>()
+                .Property(x => x.Id)
+                .ValueGeneratedNever();
             
             base.OnModelCreating(modelBuilder);
         }

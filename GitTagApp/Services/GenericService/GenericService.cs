@@ -6,7 +6,7 @@ namespace GitTagApp.Services.GenericService
 {
     public class GenericService<T> : IGenericService<T> where T : class, IBaseEntity
     {
-        private readonly IGenericRepository<T> _repository;
+        protected readonly IGenericRepository<T> _repository;
 
         public GenericService(IGenericRepository<T> repository)
         {
@@ -18,30 +18,30 @@ namespace GitTagApp.Services.GenericService
             return _repository.GetAll();
         }
 
-        public T GetById(int id)
+        public T GetById(long id)
         {
             if (id <= 0) return null;
             return _repository.GetById(id);
         }
 
-        public T Create(T entity)
+        public string Create(T entity)
         {
             _repository.Create(entity);
-            return _repository.GetById(entity.Id);
+            return "Item successfully created";
         }
 
-        public T Update(T entity)
+        public string Update(T entity)
         {
             if (entity.Id.ToString().IsNullOrEmpty() || entity.Id <= 0 || _repository.GetById(entity.Id) == null) return null;
             _repository.Update(entity);
-            return _repository.GetById(entity.Id);
+            return "Item successfully updated.";
         }
 
-        public IEnumerable<T> Delete(int id)
+        public string Delete(long id)
         {
             if (id.ToString().IsNullOrEmpty() || id <= 0 || _repository.GetById(id) == null) return null;
             _repository.Delete(id);
-            return _repository.GetAll();
+            return "Item successfully deleted.";
         }
         
         public void Dispose()
