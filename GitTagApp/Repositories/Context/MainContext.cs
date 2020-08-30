@@ -26,6 +26,16 @@ namespace GitTagApp.Repositories.Context
         {
             modelBuilder.Entity<GitRepoTag>().HasKey(gt => new {gt.GitRepoId, gt.TagId});
 
+            modelBuilder.Entity<GitRepoTag>()
+                .HasOne<GitRepo>(gt => gt.GitRepo)
+                .WithMany(t => t.GitRepoTags)
+                .HasForeignKey(gt => gt.GitRepoId);
+
+            modelBuilder.Entity<GitRepoTag>()
+                .HasOne<Tag>(gt => gt.Tag)
+                .WithMany(g => g.GitRepoTags)
+                .HasForeignKey(gt => gt.TagId);
+
             modelBuilder.Entity<GitRepo>()
                 .HasKey(x => x.Id);
             
@@ -34,7 +44,7 @@ namespace GitTagApp.Repositories.Context
                 .ValueGeneratedNever();
 
             modelBuilder.Entity<GitRepo>()
-                .HasOne<User>(u => u.User)
+                .HasOne(u => u.User)
                 .WithMany(g => g.GitRepos)
                 .HasForeignKey(u => u.UserId);
 
