@@ -2,6 +2,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using GitTagApp.Interfaces;
+using GitTagApp.Repositories;
+using GitTagApp.Repositories.Context;
+using GitTagApp.Repositories.GenericRepository;
+using GitTagApp.Services;
+using GitTagApp.Services.GenericService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -9,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +33,19 @@ namespace GitTagApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<MainContext>(opt => opt
+                .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309"));
+            
+            services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IGitRepoRepository, GitRepoRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IGitRepoService, GitRepoService>();
+            
             services.AddRazorPages();
 
             services.AddAuthentication(options =>
@@ -38,7 +58,7 @@ namespace GitTagApp
                 .AddOAuth("Github", options =>
                 {
                     options.ClientId = Configuration["GithubOauth:ClientId"];
-                    options.ClientSecret = Configuration["GithuOauth:ClientSecret"];
+                    options.ClientSecret = Configuration["GithubOauth:ClientSecret"];
                     options.CallbackPath = new PathString("/signin-github");
                     options.AuthorizationEndpoint = Configuration["GithubOauth:AuthorizationEndpoint"];
                     options.TokenEndpoint = Configuration["GithubOauth:TokenEndpoint"];

@@ -8,7 +8,7 @@ namespace GitTagApp.Controllers
     {
         // GET
         [HttpGet]
-        public IActionResult Login(string returnUrl = "/")
+        public IActionResult Login(string returnUrl = "/Main")
         {
             return Challenge(new AuthenticationProperties {RedirectUri = returnUrl});
         }

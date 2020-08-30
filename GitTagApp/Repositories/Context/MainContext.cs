@@ -1,5 +1,4 @@
-﻿using System;
-using GitTagApp.Entities;
+﻿using GitTagApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -19,17 +18,44 @@ namespace GitTagApp.Repositories.Context
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<GitRepository> GitRepositories { get; set; }
+        public DbSet<GitRepo> GitRepos { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<GitRepoTag> GitRepoTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GitRepositoryTag>().HasKey(gt => new {gt.GitRepositoryId, gt.TagId});
+            modelBuilder.Entity<GitRepoTag>().HasKey(gt => new {gt.GitRepoId, gt.TagId});
 
-            modelBuilder.Entity<GitRepository>()
-                .HasOne<User>(u => u.User)
-                .WithMany(g => g.GitRepositories)
+            modelBuilder.Entity<GitRepoTag>()
+                .HasOne<GitRepo>(gt => gt.GitRepo)
+                .WithMany(t => t.GitRepoTags)
+                .HasForeignKey(gt => gt.GitRepoId);
+
+            modelBuilder.Entity<GitRepoTag>()
+                .HasOne<Tag>(gt => gt.Tag)
+                .WithMany(g => g.GitRepoTags)
+                .HasForeignKey(gt => gt.TagId);
+
+            modelBuilder.Entity<GitRepo>()
+                .HasKey(x => x.Id);
+            
+            modelBuilder.Entity<GitRepo>()
+                .Property(x => x.Id)
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<GitRepo>()
+                .HasOne(u => u.User)
+                .WithMany(g => g.GitRepos)
                 .HasForeignKey(u => u.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasKey(x => x.Id);
+            
+            modelBuilder.Entity<User>()
+                .Property(x => x.Id)
+                .ValueGeneratedNever();
+            
+            base.OnModelCreating(modelBuilder);
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -37,7 +63,7 @@ namespace GitTagApp.Repositories.Context
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .UseSqlServer(Configuration.GetConnectionString("GithubOauth"));
+                    .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309");
             }
         }
     }

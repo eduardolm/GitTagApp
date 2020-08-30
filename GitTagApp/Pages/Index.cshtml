@@ -4,13 +4,23 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="row">
+<div class="flex-column">
      @if (!User.Identity.IsAuthenticated)
     {
-        <a asp-action="Login" asp-controller="Login" class="btn btn-outline-primary">Log In with GitHub</a>
+        <div class="row" style="display: block; align-content: center; justify-content: center; margin: 2rem;">
+            <h1 class="text-black-50">Welcome to GitTagApp</h1>
+            <p>Please log in to access full functionalities:</p>
+            <a asp-action="Login" asp-controller="Login" class="btn btn-primary">Log In with GitHub</a>
+        </div>
     }
      else
      {
-         
+         <div class="row" style="display: flex; align-content: center; justify-content: center;">
+             <h1 class="text-black-50">Welcome to GitTagApp</h1>
+             <p style="max-width: 80%; padding: 2rem; justify-content: center; position: relative;">
+                 Here you can list starred repos, add tags, and search starred repositories by tag.
+                 To navigate the app, just use the top menu bar.
+             </p>
+         </div>
      }
 </div>

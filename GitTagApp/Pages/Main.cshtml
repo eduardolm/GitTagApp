@@ -1,0 +1,25 @@
+﻿@page
+@model MainModel
+@{
+    ViewData["Title"] = "Main Page";
+}
+
+<h1 class="text-black-50">
+    Welcome to GitTagApp.
+</h1>
+
+<p>You have successfully logged in!</p>
+
+ @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="row" style="display: block; align-content: center; justify-content: center; margin: 2rem;">
+            <h1 class="text-black-50">Welcome to GitTagApp</h1>
+            <p>Please log in to access full functionalities:</p>
+            <a asp-action="Login" asp-controller="Login" class="btn btn-primary">Log In with GitHub</a>
+        </div>
+    }
+ else
+ {
+     Redirect("/Main");
+ }
+
