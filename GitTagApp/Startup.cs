@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +34,7 @@ namespace GitTagApp
         {
 
             services.AddDbContext<MainContext>(opt => opt
-                .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309"));
+                .UseSqlServer(Configuration["GithubOauth:ConnectionString"]));
             
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -45,6 +44,8 @@ namespace GitTagApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IGitRepoService, GitRepoService>();
+            services.AddScoped<IGitRepoTagRepository, GitRepoTagRepository>();
+            services.AddScoped<IGitRepoTagService, GitRepoTagService>();
             
             services.AddRazorPages();
 

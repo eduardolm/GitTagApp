@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GitTagApp.Entities;
 using GitTagApp.Interfaces;
-using GitTagApp.Repositories.Context;
 using GitTagApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,6 +15,7 @@ namespace GitTagApp.Pages
     {
         public IReadOnlyList<Repository> Repositories { get; set; }
         public IReadOnlyList<Repository> StarredRepos { get; set; }
+        public List<GitRepo> GitRepos { get; set; }
         
         private readonly ILogger<ErrorModel> _logger;
 
@@ -26,21 +24,23 @@ namespace GitTagApp.Pages
         private readonly IUserService _userService;
 
         private readonly ITagService _tagService;
-        private readonly MainContext _dbContext;
 
-        public ListModel(ILogger<ErrorModel> logger, IGitRepoService repoService, IUserService userService, ITagService tagService, MainContext dbContext)
+        private readonly IGitRepoTagService _gitRepoTagService;
+
+        public ListModel(ILogger<ErrorModel> logger, IGitRepoService repoService, IUserService userService, ITagService tagService, IGitRepoTagService gitRepoTagService)
         {
             _logger = logger;
             _repoService = repoService;
             _userService = userService;
             _tagService = tagService;
-            _dbContext = dbContext;
+            _gitRepoTagService = gitRepoTagService;
         }
 
         public async Task OnGet()
         {
             if (User.Identity.IsAuthenticated)
             {
+                var outRepos = new List<GitRepo>();
                 var gitName = string.Empty;
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
                 var github = new GitHubClient(new ProductHeaderValue("AspNetCoreGitHubAuth"), 
@@ -68,10 +68,16 @@ namespace GitTagApp.Pages
                         Name = repo.Name,
                         Description = repo.Description,
                         HttpUrl = repo.Url,
-                        UserId = dbUser.Id
+                        UserId = dbUser.Id,
                     };
                     _repoService.Create(dbRepo);
+                    
+                    var repoBuilder = new RepoBuilder(_userService, _tagService, _gitRepoTagService);
+                    var outputRepo = repoBuilder.GetPayload(dbRepo);
+                    outRepos.Add(outputRepo);
                 }
+
+                GitRepos = outRepos;
             }
         }
     }
