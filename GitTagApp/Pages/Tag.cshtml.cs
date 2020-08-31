@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using GitTagApp.Entities;
 using GitTagApp.Interfaces;
-using GitTagApp.Repositories.Context;
-using GitTagApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.Extensions.Logging;
 using Octokit;
 using Octokit.Internal;
@@ -26,6 +26,10 @@ namespace GitTagApp.Pages
         public List<SelectListItem> RepoOptions { get; set; }
         public List<SelectListItem> TagOptions { get; set; }
         
+        [ViewData]
+        public string Message { get; set; }
+        public bool IsPostSuccess { get; set; }
+        
         private readonly ILogger<ErrorModel> _logger;
 
         private readonly IGitRepoService _repoService;
@@ -34,12 +38,15 @@ namespace GitTagApp.Pages
 
         private readonly ITagService _tagService;
 
-        public TagModel(ILogger<ErrorModel> logger, IGitRepoService repoService, IUserService userService, ITagService tagService)
+        private readonly IGitRepoTagService _gitRepoTagService;
+
+        public TagModel(ILogger<ErrorModel> logger, IGitRepoService repoService, IUserService userService, ITagService tagService, IGitRepoTagService gitRepoTagService)
         {
             _logger = logger;
             _repoService = repoService;
             _userService = userService;
             _tagService = tagService;
+            _gitRepoTagService = gitRepoTagService;
         }
 
         public async Task OnGet()
@@ -61,7 +68,7 @@ namespace GitTagApp.Pages
                         Value = x.Id.ToString(),
                         Text = x.Name
                     }).ToList();
-
+                
                 TagOptions = _tagService.GetAll().Select(x =>
                     new SelectListItem
                     {
@@ -71,17 +78,49 @@ namespace GitTagApp.Pages
             }
         }
 
-        public void OnPost()
+        public void OnPostCreate()
         {
+            IsPostSuccess = false;
+            
             var tag = new Tag();
             tag.Name = Request.Form["Tag.Name"];
-            _tagService.Create(tag);
+            
+            var dbTags = (from t in _tagService.GetAll()
+                where t.Name == tag.Name
+                select t).ToList();
+            
+            if (!dbTags.Any()) _tagService.Create(tag);
+            
+            var relatedTag = (from t in _tagService.GetAll()
+                where t.Name == tag.Name
+                select t).Single();
             
             var gitRepoTag = new GitRepoTag();
             gitRepoTag.GitRepoId = Convert.ToInt64(Request.Form["starredRepoId"]);
-            gitRepoTag.TagId = tag.Id;
-            
+            gitRepoTag.TagId = relatedTag.Id;
+            Message = _gitRepoTagService.CreateRepoTag(gitRepoTag);
+        }
 
+        public void OnPostUpdate()
+        {
+            IsPostSuccess = false;
+            var newTag = new Tag();
+            
+            newTag.Name = Request.Form["Tag.Name"]; // New tag name (from text input)
+            var selectedTag = Convert.ToInt64(Request.Form["tagId"]); // Selected from select (tag to be updated)
+            newTag.Id = selectedTag;
+            var result = _tagService.Update(newTag);
+
+            if (!result.IsNullOrEmpty()) IsPostSuccess = true;
+        }
+
+        public void OnPostDelete(long id)
+        {
+            IsPostSuccess = false;
+
+            var result = _tagService.Delete(Convert.ToInt64(Request.Form["tagId"]));
+
+            if (!result.IsNullOrEmpty()) IsPostSuccess = true;
         }
     }
 }

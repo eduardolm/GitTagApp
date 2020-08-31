@@ -63,7 +63,7 @@ namespace GitTagApp.Repositories.Context
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .UseSqlServer("Server=127.0.0.1,1433;Database=GitTagApp;User Id=SA;Password=Ed=ME15432309");
+                    .UseSqlServer(Configuration["GithubOauth:ConnectionString"]);
             }
         }
     }

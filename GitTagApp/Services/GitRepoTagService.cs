@@ -6,8 +6,17 @@ namespace GitTagApp.Services
 {
     public class GitRepoTagService : GenericService<GitRepoTag>, IGitRepoTagService
     {
-        public GitRepoTagService(IGenericRepository<GitRepoTag> repository) : base(repository)
+        private readonly IGitRepoTagRepository _repository;
+        public GitRepoTagService(IGitRepoTagRepository repository) : base(repository)
         {
+            _repository = repository;
         }
+
+        public string CreateRepoTag(GitRepoTag gitRepoTag)
+        {
+            _repository.CreateRepoTag(gitRepoTag);
+            return "Item successfully created";
+        }
+        
     }
 }
