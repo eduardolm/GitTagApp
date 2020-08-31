@@ -13,7 +13,7 @@ namespace GitTagApp.Repositories
             _dbContext = dbContext;
         }
         
-        public new void CreateRepoTag(GitRepoTag gitRepoTag)
+        public void CreateRepoTag(GitRepoTag gitRepoTag)
         {
             var checkId = _dbContext.GitRepoTags.Find(gitRepoTag.GitRepoId, gitRepoTag.TagId);
             if (checkId != null) return;
@@ -21,6 +21,13 @@ namespace GitTagApp.Repositories
             DetachLocal(_ => _.Id == gitRepoTag.GitRepoId);
             DetachLocal(_ => _.Id == gitRepoTag.TagId);
             _dbContext.GitRepoTags.Add(gitRepoTag);
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteRepoTag(long tagId, long repoId)
+        {
+            var entity = _dbContext.GitRepoTags.Find(repoId, tagId);
+            _dbContext.Remove(entity);
             _dbContext.SaveChanges();
         }
     }

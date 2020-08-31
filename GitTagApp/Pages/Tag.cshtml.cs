@@ -112,13 +112,15 @@ namespace GitTagApp.Pages
             var result = _tagService.Update(newTag);
 
             if (!result.IsNullOrEmpty()) IsPostSuccess = true;
+
+            RedirectToPage("/List");
         }
 
         public void OnPostDelete(long id)
         {
             IsPostSuccess = false;
 
-            var result = _tagService.Delete(Convert.ToInt64(Request.Form["tagId"]));
+            var result = _gitRepoTagService.DeleteRepoTag(Convert.ToInt64(Request.Form["tagId"]), Convert.ToInt64(Request.Form["starredRepoId"]));
 
             if (!result.IsNullOrEmpty()) IsPostSuccess = true;
         }

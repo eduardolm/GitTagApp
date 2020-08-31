@@ -53,9 +53,18 @@
              <div id="collapse-starred" class="collapse" aria-labelledby="heading-2" data-parent="#accordion">
                  <div class="card-body">
                      <ul>
-                         @foreach (var repo in Model.StarredRepos)
+                         @foreach (var repo in Model.GitRepos)
                          {
-                             <li><a href="@repo.HtmlUrl">@repo.FullName</a></li>
+                             <li>Name: <a href="@repo.HttpUrl">@repo.Name</a></li>
+                             <li>Id: @repo.Id</li>
+                             <li>Description: @repo.Description</li>
+                             <li>URL: @repo.HttpUrl</li>
+                             <li>Tags: @foreach (var item in repo.GitRepoTags)
+                              {
+                                  <li>@item.Tag.Name</li>
+                              }
+                            </li>
+                         <br>
                          }
                      </ul>
                  </div>

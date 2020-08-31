@@ -4,6 +4,7 @@ namespace GitTagApp.Interfaces
 {
     public interface IGitRepoTagRepository : IGenericRepository<GitRepoTag>
     {
-        new void CreateRepoTag(GitRepoTag gitRepoTag);
+        void CreateRepoTag(GitRepoTag gitRepoTag);
+        void DeleteRepoTag(long tagId, long repoId);
     }
 }
