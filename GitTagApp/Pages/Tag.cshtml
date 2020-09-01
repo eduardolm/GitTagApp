@@ -122,43 +122,43 @@
              </div>
          </div>
          <div class="card">
-              <div class="card-header" id="heading-3">
-                  <h5 class="mb-0">
-                      <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapse-delete" aria-expanded="false" aria-controls="collapse-delete">
-                          Delete tags
-                      </button>
-                  </h5>
-              </div>
-              <div id="collapse-delete" class="collapse" aria-labelledby="heading-3" data-parent="#accordion">
-                  <div class="card-body">
-                      <form class="form-horizontal" asp-page-handler="delete" method="post" style="padding-left: 10px; margin: 10px; width: 90%; height: 65px;; display: flex; justify-content: space-evenly; align-items: baseline;">
-                          <div class="form-group">
-                              <label asp-for="Repositories" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b; position: relative">
-                                  Repository:
-                              </label>
-                              <div class="col-sm-10">
-                                  <select class="custom-select-sm" name="starredRepoId" asp-items="Model.RepoOptions" style="margin-top: 3px;; border-radius: 0.3rem; border: 1px solid #95999c; color: #4e555b; width: 10rem; height: 2rem;"></select>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label asp-for="Tag" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b;">
-                                  Tag:
-                              </label>
-                              <div class="col-sm-10">
-                                  <select class="custom-select-sm" name="tagId" asp-items="Model.TagOptions" style="margin-top: 3px;; border-radius: 0.3rem; border: 1px solid #95999c; color: #4e555b; width: 10rem; height: 2rem;"></select>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-sm-offset-2 col-sm-10">
-                                  <button id="btn-delete" class="btn btn-primary" type="submit" style="height: 3rem; width: auto; margin-top: 10px; align-items: center; justify-content: center; ">
-                                      Delete
-                                  </button>
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
+             <div class="card-header" id="heading-3">
+                 <h5 class="mb-0">
+                     <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapse-delete" aria-expanded="false" aria-controls="collapse-delete">
+                         Delete tags
+                     </button>
+                 </h5>
+             </div>
+             <div id="collapse-delete" class="collapse" aria-labelledby="heading-3" data-parent="#accordion">
+                 <div class="card-body">
+                     <form class="form-horizontal" asp-page-handler="delete" method="post" style="padding-left: 10px; margin: 10px; width: 90%; height: 65px;; display: flex; justify-content: space-evenly; align-items: baseline;">
+                         <div class="form-group">
+                             <label asp-for="Repositories" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b; position: relative">
+                                 Repository:
+                             </label>
+                             <div class="col-sm-10">
+                                 <select class="custom-select-sm" name="starredRepoId" asp-items="Model.RepoOptions" style="margin-top: 3px;; border-radius: 0.3rem; border: 1px solid #95999c; color: #4e555b; width: 10rem; height: 2rem;"></select>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label asp-for="Tag" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b;">
+                                 Tag:
+                             </label>
+                             <div class="col-sm-10">
+                                 <select class="custom-select-sm" name="tagId" asp-items="Model.TagOptions" style="margin-top: 3px;; border-radius: 0.3rem; border: 1px solid #95999c; color: #4e555b; width: 10rem; height: 2rem;"></select>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-sm-offset-2 col-sm-10">
+                                 <button id="btn-delete" class="btn btn-primary" type="submit" style="height: 3rem; width: auto; margin-top: 10px; align-items: center; justify-content: center; ">
+                                     Delete
+                                 </button>
+                             </div>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
      </div>
  }
 

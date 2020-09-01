@@ -80,7 +80,7 @@ namespace GitTagApp.Tests.Unit.Services
         [InlineData(8916833)]
         [InlineData(216546)]
         [InlineData(121364)]
-        public void Should_Update_Existing_User(int id)
+        public void Should_Update_Existing_User(long id)
         {
             var fakeContext = new FakeContext("UpdateUser");
             fakeContext.FillWith<User>();
@@ -94,6 +94,7 @@ namespace GitTagApp.Tests.Unit.Services
                 currentUser.Id = 1234;
                 service.Update(currentUser);
                 Assert.Equal(1234, service.GetById(id).Id);
+                Assert.NotNull(service.GetById(id));
                 repository.Dispose();
             }
         }
