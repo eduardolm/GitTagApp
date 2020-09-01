@@ -120,7 +120,7 @@ namespace GitTagApp.Pages
         {
             IsPostSuccess = false;
 
-            var result = _gitRepoTagService.DeleteRepoTag(Convert.ToInt64(Request.Form["tagId"]), Convert.ToInt64(Request.Form["starredRepoId"]));
+            var result = _gitRepoTagService.DeleteRepoTag(Convert.ToInt64(Request.Form["starredRepoId"]), Convert.ToInt64(Request.Form["tagId"]));
 
             if (!result.IsNullOrEmpty()) IsPostSuccess = true;
         }

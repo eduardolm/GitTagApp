@@ -24,7 +24,6 @@
     <ItemGroup>
       <Folder Include="Unit\Controllers" />
       <Folder Include="Unit\Pages" />
-      <Folder Include="Unit\Services" />
     </ItemGroup>
 
     <ItemGroup>
