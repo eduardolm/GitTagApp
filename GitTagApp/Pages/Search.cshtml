@@ -1,0 +1,78 @@
+﻿@page
+@using Castle.Core.Internal
+@model SearchModel
+@{
+    ViewData["Title"] = "Main Page";
+}
+
+ @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="row" style="display: block; align-content: center; justify-content: center; margin: 2rem;">
+            <h1 class="text-black-50">Welcome to GitTagApp</h1>
+            <p>Please log in to access full functionalities:</p>
+            <a asp-action="Login" asp-controller="Login" class="btn btn-primary">Log In with GitHub</a>
+        </div>
+    }
+ else
+ {
+     <h1 class="text-black-50">
+         Tag
+     </h1>
+     <p>
+         Here, we can search starred by tags.
+         Just type in the search string and click <strong>Search</strong><br>
+     </p>
+     
+     <div id="accordion" class="container-fluid">
+         <div class="card">
+             <div class="card-header" id="headingOne">
+                 <h5 class="mb-0">
+                     <button class="btn btn-primary" data-toggle="collapse" data-target="#collapse-create" aria-expanded="true" aria-controls="collapse-create">
+                         Search by tag
+                     </button>
+                 </h5>
+             </div>
+             <div id="collapse-create" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion">
+                 <div class="card-body">        
+                     <form class="form-horizontal" asp-page-handler="search" method="post" style="padding-left: 10px; margin: 10px; width: 90%; height: 65px;; display: flex; justify-content: space-evenly; align-items: baseline;">
+                         <div class="form-group">
+                             <label asp-for="Tag" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b;">
+                                 Enter search string:
+                             </label>
+                             <div class="col-sm-10">
+                                 <input type="text" class="form-control" asp-for="Tag.Name" style="height: 2rem; border-radius: 0.3rem; border: 1px solid #95999c;margin: 3px;;"/><br/>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-sm-offset-2 col-sm-10">
+                                 <button class="btn btn-primary" type="submit" style="height: 3rem; width: auto; margin-top: 10px; align-items: center; justify-content: center">
+                                     Search
+                                 </button>
+                             </div>
+                         </div>
+                     </form>
+                     @if (!Model.GitRepos.IsNullOrEmpty())
+                     {
+                         <br>
+                         <ul>
+                             @foreach (var repo in Model.GitRepos)
+                             {
+                                 <li>Name: <a href="@repo.HttpUrl">@repo.Name</a></li>
+                                 <li>Id: @repo.Id</li>
+                                 <li>Description: @repo.Description</li>
+                                 <li>URL: @repo.HttpUrl</li>
+                                 <li>Tags: @foreach (var item in repo.GitRepoTags)
+                                           {
+                                               <li>@item.Tag.Name</li>
+                                           }
+                                 </li>
+                                 <br>
+                             }
+                         </ul> 
+                     }
+                 </div>
+             </div>
+         </div>
+    </div>
+ }
+
