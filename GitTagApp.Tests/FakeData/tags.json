@@ -1,0 +1,22 @@
+﻿[
+  {
+    "Id": 1,
+    "Name": "JavaScript"
+  },
+  {
+    "Id": 2,
+    "Name": "SQL"
+  },
+  {
+    "Id": 3,
+    "Name": "BackEnd"
+  },
+  {
+    "Id": 4,
+    "Name": "FrontEnd"
+  },
+  {
+    "Id": 5,
+    "Name": ".NET Core"
+  }
+]

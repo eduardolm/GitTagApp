@@ -12,7 +12,11 @@ namespace GitTagApp.Repositories
         {
             _dbContext = dbContext;
         }
-        
+
+        public GitRepoTag GetByIdRepoTag(long repoId, long tagId)
+        {
+            return _dbContext.GitRepoTags.Find(repoId, tagId);
+        }
         public void CreateRepoTag(GitRepoTag gitRepoTag)
         {
             var checkId = _dbContext.GitRepoTags.Find(gitRepoTag.GitRepoId, gitRepoTag.TagId);
@@ -24,7 +28,7 @@ namespace GitTagApp.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void DeleteRepoTag(long tagId, long repoId)
+        public void DeleteRepoTag(long repoId, long tagId)
         {
             var entity = _dbContext.GitRepoTags.Find(repoId, tagId);
             _dbContext.Remove(entity);

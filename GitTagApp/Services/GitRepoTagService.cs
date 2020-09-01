@@ -12,6 +12,11 @@ namespace GitTagApp.Services
             _repository = repository;
         }
 
+        public GitRepoTag GetByIdRepoTag(long repoId, long tagId)
+        {
+            return _repository.GetByIdRepoTag(repoId, tagId);
+        }
+
         public string CreateRepoTag(GitRepoTag gitRepoTag)
         {
             _repository.CreateRepoTag(gitRepoTag);
