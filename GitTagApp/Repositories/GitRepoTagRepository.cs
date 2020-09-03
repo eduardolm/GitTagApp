@@ -31,8 +31,11 @@ namespace GitTagApp.Repositories
         public void DeleteRepoTag(long repoId, long tagId)
         {
             var entity = _dbContext.GitRepoTags.Find(repoId, tagId);
-            _dbContext.Remove(entity);
-            _dbContext.SaveChanges();
+            if (entity != null)
+            {
+                _dbContext.Remove(entity);
+                _dbContext.SaveChanges();
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 @using Castle.Core.Internal
 @model SearchModel
 @{
-    ViewData["Title"] = "Main Page";
+    ViewData["Title"] = "Search by Tag";
 }
 
  @if (!User.Identity.IsAuthenticated)
@@ -16,7 +16,7 @@
  else
  {
      <h1 class="text-black-50">
-         Tag
+         Search Tags
      </h1>
      <p>
          Here, we can search starred by tags.

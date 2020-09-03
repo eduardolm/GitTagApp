@@ -70,19 +70,19 @@ namespace GitTagApp.Pages
                 };
             }
             var outRepos = new List<GitRepo>();
-            var searchString = Request.Form["Tag.Name"];
+            var stringToSearch = Request.Form["Tag.Name"];
             var returnRepos = (from gt in _gitRepoTagService.GetAll()
                 join t in _tagService.GetAll()
                     on gt.TagId equals t.Id
-                where t.Name.ToLower().Contains(searchString)
+                where t.Name.ToLower().Contains(stringToSearch.ToString().ToLower())
                 select gt).ToList();
 
-            var edu = (from r in StarredRepos
+            var tempRepo = (from r in StarredRepos
                 join gt in returnRepos
                     on r.Id equals gt.GitRepoId
                 select r).ToList();
 
-            foreach (var repo in edu)
+            foreach (var repo in tempRepo)
             {
                 var dbRepo = new GitRepo
                 {

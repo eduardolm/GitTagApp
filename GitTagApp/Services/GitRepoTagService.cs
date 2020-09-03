@@ -23,9 +23,9 @@ namespace GitTagApp.Services
             return "Item successfully created";
         }
 
-        public string DeleteRepoTag(long tagId, long repoId)
+        public string DeleteRepoTag(long repoId, long tagId)
         {
-            _repository.DeleteRepoTag(tagId, repoId);
+            _repository.DeleteRepoTag(repoId, tagId);
             return "Item successfully deleted.";
         }
         

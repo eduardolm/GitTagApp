@@ -22,5 +22,11 @@
     <Compile Update="Pages\About.cshtml.cs">
       <DependentUpon>About.cshtml</DependentUpon>
     </Compile>
+    <Compile Update="Pages\UpdateTag.cs">
+      <DependentUpon>UpdateTag.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\CreateTag.cshtml.cs">
+      <DependentUpon>CreateTag.cshtml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

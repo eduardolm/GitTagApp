@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <Folder Include="Unit\Controllers" />
-      <Folder Include="Unit\Pages" />
     </ItemGroup>
 
     <ItemGroup>
