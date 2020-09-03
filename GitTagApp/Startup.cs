@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -18,6 +19,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
 
 namespace GitTagApp
 {
@@ -32,9 +36,29 @@ namespace GitTagApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                }
+            };
+            var client = new SecretClient(new Uri("https://gittagapp.vault.azure.net/"), new DefaultAzureCredential(),options);
+
+            KeyVaultSecret clientId = client.GetSecret("ClientId");
+            KeyVaultSecret clientSecret = client.GetSecret("ClientSecret");
+            KeyVaultSecret redirectUri = client.GetSecret("RedirectUri");
+            KeyVaultSecret connectionString = client.GetSecret("ConnectionString");
+            KeyVaultSecret authorizationEndpoint = client.GetSecret("AuthorizationEndpoint");
+            KeyVaultSecret tokenEndpoint = client.GetSecret("TokenEndpoint");
+            KeyVaultSecret userInformationEndpoint = client.GetSecret("UserInformationEndpoint");
 
             services.AddDbContext<MainContext>(opt => opt
-                .UseSqlServer(Configuration["GithubOauth:ConnectionString"]));
+                .UseSqlServer(connectionString.Value));
+    
             
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -58,12 +82,12 @@ namespace GitTagApp
                 .AddCookie()
                 .AddOAuth("Github", options =>
                 {
-                    options.ClientId = Configuration["GithubOauth:ClientId"];
-                    options.ClientSecret = Configuration["GithubOauth:ClientSecret"];
+                    options.ClientId = clientId.Value;
+                    options.ClientSecret = clientSecret.Value;
                     options.CallbackPath = new PathString("/signin-github");
-                    options.AuthorizationEndpoint = Configuration["GithubOauth:AuthorizationEndpoint"];
-                    options.TokenEndpoint = Configuration["GithubOauth:TokenEndpoint"];
-                    options.UserInformationEndpoint = Configuration["GithubOauth:UserInformationEndpoint"];
+                    options.AuthorizationEndpoint = authorizationEndpoint.Value;
+                    options.TokenEndpoint = tokenEndpoint.Value;
+                    options.UserInformationEndpoint = userInformationEndpoint.Value;
 
                     options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
                     options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
