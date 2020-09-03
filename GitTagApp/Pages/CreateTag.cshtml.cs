@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using GitTagApp.Entities;
 using GitTagApp.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -52,7 +51,6 @@ namespace GitTagApp.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                var gitName = string.Empty;
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
                 var github = new GitHubClient(new ProductHeaderValue("AspNetCoreGitHubAuth"), 
                     new InMemoryCredentialStore(new Credentials(accessToken)));

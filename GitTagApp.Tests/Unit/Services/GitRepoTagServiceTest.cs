@@ -3,7 +3,6 @@ using GitTagApp.Entities;
 using GitTagApp.Repositories;
 using GitTagApp.Repositories.Context;
 using GitTagApp.Services;
-using GitTagApp.Tests.Unit.Entities;
 using GitTagApp.Tests.Unit.Repositories.Context;
 using Xunit;
 
@@ -147,12 +146,13 @@ namespace GitTagApp.Tests.Unit.Services
                 service.CreateRepoTag(newGitRepoTag);
                 var existingGitRepoTag = (from u in service.GetAll()
                     where u.GitRepoId == repoId
+                    where u.TagId == tagId
                     select u).FirstOrDefault();
 
                 var anotherGitRepoTag = new GitRepoTag();
                 anotherGitRepoTag.GitRepoId = 123;
                 anotherGitRepoTag.TagId = 12;
-                var anotherResult = service.CreateRepoTag(anotherGitRepoTag);
+                service.CreateRepoTag(anotherGitRepoTag);
                 
                 Assert.NotEqual(newGitRepoTag.GitRepoId, existingGitRepoTag.GitRepoId);
                 Assert.NotEqual(newGitRepoTag.TagId, existingGitRepoTag.TagId);

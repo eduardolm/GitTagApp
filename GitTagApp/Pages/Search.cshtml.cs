@@ -7,7 +7,6 @@ using GitTagApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Octokit;
 using Octokit.Internal;
@@ -18,8 +17,6 @@ namespace GitTagApp.Pages
     public class SearchModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        
-        private readonly IGitRepoService _repoService;
         
         private readonly IUserService _userService;
         
@@ -37,7 +34,6 @@ namespace GitTagApp.Pages
         public SearchModel(ILogger<IndexModel> logger, IGitRepoService gitRepoService, ITagService tagService, IGitRepoTagService gitRepoTagService, IUserService userService)
         {
             _logger = logger;
-            _repoService = gitRepoService;
             _tagService = tagService;
             _gitRepoTagService = gitRepoTagService;
             _userService = userService;
@@ -63,7 +59,7 @@ namespace GitTagApp.Pages
                 var tempUser = await github.User.Get(Repositories[0].Owner.Login);
                 gitName = tempUser.Name;
                             
-                UserEntity = new Entities.User
+                UserEntity = new User
                 {
                     Id = Repositories[0].Owner.Id,
                     Name = gitName

@@ -2,7 +2,6 @@
 using GitTagApp.Repositories;
 using GitTagApp.Repositories.Context;
 using GitTagApp.Services;
-using GitTagApp.Tests.Unit.Entities;
 using GitTagApp.Tests.Unit.Repositories.Context;
 using Xunit;
 
@@ -23,7 +22,7 @@ namespace GitTagApp.Tests.Unit.Services
 
             using (var context = new MainContext(fakeContext.FakeOptions))
             {
-                var expected = fakeContext.GetFakeData<GitRepo>().Find(x => x.Id == id);
+                fakeContext.GetFakeData<GitRepo>().Find(x => x.Id == id);
 
                 var repoRepository = new GitRepoRepository(context);
                 var repoService = new GitRepoService(repoRepository);
