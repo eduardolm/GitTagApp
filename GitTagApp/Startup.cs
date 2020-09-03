@@ -50,7 +50,6 @@ namespace GitTagApp
 
             KeyVaultSecret clientId = client.GetSecret("ClientId");
             KeyVaultSecret clientSecret = client.GetSecret("ClientSecret");
-            KeyVaultSecret redirectUri = client.GetSecret("RedirectUri");
             KeyVaultSecret connectionString = client.GetSecret("ConnectionString");
             KeyVaultSecret authorizationEndpoint = client.GetSecret("AuthorizationEndpoint");
             KeyVaultSecret tokenEndpoint = client.GetSecret("TokenEndpoint");
