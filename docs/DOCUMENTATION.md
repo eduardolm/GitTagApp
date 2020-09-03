@@ -53,3 +53,7 @@ The application is pretty straightforward. No installation required!
  ---------- | -------- | ---------
  GitRepoId | _bigint_ | PK
  TagId | _bigint_ | PK
+ 
+ ### ER Diagram
+ The attached ER diagram represents the database structure that backs the application.
+ ![ER Diagram](../img/GitTagApp.svg)
