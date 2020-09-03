@@ -152,7 +152,7 @@ namespace GitTagApp.Tests.Unit.Services
                 var anotherTag = new Tag();
                 anotherTag.Name = "Test Name 2";
                 anotherTag.Id = 6;
-                var anotherResult = service.Create(anotherTag);
+                service.Create(anotherTag);
                 
                 Assert.NotEqual(newTag.Id, existingTag.Id);
                 Assert.NotEqual(newTag.Name, existingTag.Name);

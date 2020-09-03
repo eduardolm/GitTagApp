@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using GitTagApp.Entities;
 using GitTagApp.Repositories;
 using GitTagApp.Repositories.Context;
@@ -152,7 +151,7 @@ namespace GitTagApp.Tests.Unit.Services
                 var anotherUser = new User();
                 anotherUser.Name = "Test Name 2";
                 anotherUser.Id = 7;
-                var anotherResult = service.Create(anotherUser);
+                service.Create(anotherUser);
                 
                 Assert.NotEqual(newUser.Id, existingUser.Id);
                 Assert.NotEqual(newUser.Name, existingUser.Name);

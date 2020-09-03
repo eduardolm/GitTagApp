@@ -50,7 +50,6 @@ namespace GitTagApp.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                var gitName = string.Empty;
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
                 var github = new GitHubClient(new ProductHeaderValue("AspNetCoreGitHubAuth"), 
                     new InMemoryCredentialStore(new Credentials(accessToken)));

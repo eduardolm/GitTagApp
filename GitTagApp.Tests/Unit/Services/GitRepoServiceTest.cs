@@ -159,7 +159,7 @@ namespace GitTagApp.Tests.Unit.Services
                 var anotherGitRepo = new GitRepo();
                 anotherGitRepo.Name = "GitRepo Name 2";
                 anotherGitRepo.Id = 6;
-                var anotherResult = service.Create(anotherGitRepo);
+                service.Create(anotherGitRepo);
                 
                 Assert.NotEqual(newGitRepo.Id, existingGitRepo.Id);
                 Assert.NotEqual(newGitRepo.Name, existingGitRepo.Name);

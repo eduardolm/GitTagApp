@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GitTagApp.Interfaces
+﻿namespace GitTagApp.Interfaces
 {
     public interface IBaseEntity
     {

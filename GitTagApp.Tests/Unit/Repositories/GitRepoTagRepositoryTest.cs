@@ -2,7 +2,6 @@
 using GitTagApp.Entities;
 using GitTagApp.Repositories;
 using GitTagApp.Repositories.Context;
-using GitTagApp.Tests.Unit.Entities;
 using GitTagApp.Tests.Unit.Repositories.Context;
 using Xunit;
 

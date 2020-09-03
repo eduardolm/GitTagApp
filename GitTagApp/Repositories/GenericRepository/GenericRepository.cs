@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GitTagApp.Entities;
 using GitTagApp.Repositories.Context;
 using GitTagApp.Interfaces;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace GitTagApp.Repositories.GenericRepository
