@@ -1,0 +1,111 @@
+﻿@page "{id?}"
+@model TagModel
+@{
+    ViewData["Title"] = "Create Tags";
+}
+
+@if (!User.Identity.IsAuthenticated)
+    {
+        <div class="row" style="display: block; align-content: center; justify-content: center; margin: 2rem;">
+            <h1 class="text-black-50">Welcome to GitTagApp</h1>
+            <p>Please log in to access full functionalities:</p>
+            <a asp-action="Login" asp-controller="Login" class="btn btn-primary">Log In with GitHub</a>
+        </div>
+    }
+ else
+ {
+     <h1 class="text-black-50">
+         Create Tags
+     </h1>
+     <p>
+         Here, we can add tags to your starred repositories.
+         Tags will make it easier to find repositories, allowing search by tag funcionality.
+         Just add the desired tags and be happy!<br>
+         To create new tags, just click on <strong>Add tags</strong> button, fill the form and voila!<br>
+     </p>
+
+     <div id="accordion" class="container-fluid">
+         <div class="card">
+             <div class="card-header">
+                 <h5 class="mb-0">
+                     <button class="btn btn-primary" data-toggle="collapse" data-target="#collapse-create" aria-expanded="true" aria-controls="collapse-create">
+                         Add tags
+                     </button>
+                 </h5>
+             </div>
+             <div id="collapse-create" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion">
+                 <div class="card-body" id="card-1">
+                     <form class="form-horizontal" asp-page-handler="create" method="post" style="padding-left: 10px; margin: 10px; width: 90%; height: 65px;; display: flex; justify-content: space-evenly; align-items: baseline;">
+                         <div class="form-group">
+                             <label asp-for="Repositories" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b; position: relative">
+                                 Repository:
+                             </label>
+                             <div class="col-sm-10">
+                                 <select asp-for="RepoId" asp-items="Model.RepoOptions" style="margin-top: 3px;; border-radius: 0.3rem; border: 1px solid #95999c; color: #4e555b; width: 10rem; height: 2rem;">
+                                    <option value="">--Select--</option>
+                                 </select>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label asp-for="Tag" class="custom-control-label" style="margin: 3px; font-size: 16px; color: #4e555b;">
+                                 Enter tag name:
+                             </label>
+                             <div class="col-sm-10">
+                                 <input type="text" class="form-control" asp-for="Tag.Name" style="height: 2rem; border-radius: 0.3rem; border: 1px solid #95999c;margin: 3px;;"/><br/>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-sm-offset-2 col-sm-10">
+                                 <button id="btn-create" class="btn btn-primary" name="create" type="submit" style="height: 3rem; width: auto; margin-top: 10px; align-items: center; justify-content: center">
+                                     Save
+                                 </button>
+                             </div>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+ }
+
+@section scripts {
+    <script>
+        let tagsSelect = document.getElementById('RepoTag');
+                $('#RepoId').val('');
+        
+                $('#RepoId').change(function () {
+        
+                    const repoId = $(this).val();
+                    clearTagsSelect();
+        
+                    if (repoId === '') {
+                        return;
+                    }                   
+                   
+                        fetch('https://localhost:5001/CreateTag/' + repoId + '?handler=populate')
+                                .then(response => response.json())
+                                .then(data => {
+                                    let option;
+                
+                                    for (let i = 0; i < data.length; i++) {
+                                        option = document.createElement('option');
+                                        option.text = data[i].text;
+                                        option.value = data[i].value;
+                                        tagsSelect.add(option);
+                                    }
+                                });
+                  
+                });
+
+        function clearTagsSelect() {
+            $('#RepoTag')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="">--Select--</option>')
+                .val('');
+        }
+    </script>
+
+}
+

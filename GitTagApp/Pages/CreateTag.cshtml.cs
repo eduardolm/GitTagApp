@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.Extensions.Logging;
 using Octokit;
 using Octokit.Internal;
@@ -19,32 +18,32 @@ namespace GitTagApp.Pages
     public class TagModel : PageModel
     {
         public IReadOnlyList<Repository> Repositories { get; set; }
-        public IReadOnlyList<Repository> StarredRepos { get; set; }
+        public IReadOnlyList<Repository> StarredRepos { get; set; } // Pets
+        public IReadOnlyList<SelectListItem> RepoOptions { get; set; }
+
+        [BindProperty]
+        public string RepoId { get; set; }
         
         [BindProperty]
+        public string RepoTag { get; set; }
+
+        [BindProperty]
         public Tag Tag { get; set; }
-        public List<SelectListItem> RepoOptions { get; set; }
-        public List<SelectListItem> TagOptions { get; set; }
-        
+
         [ViewData]
         public string Message { get; set; }
         public bool IsPostSuccess { get; set; }
         
         private readonly ILogger<ErrorModel> _logger;
-
-        private readonly IGitRepoService _repoService;
-
-        private readonly IUserService _userService;
+        
 
         private readonly ITagService _tagService;
 
         private readonly IGitRepoTagService _gitRepoTagService;
 
-        public TagModel(ILogger<ErrorModel> logger, IGitRepoService repoService, IUserService userService, ITagService tagService, IGitRepoTagService gitRepoTagService)
+        public TagModel(ILogger<ErrorModel> logger, ITagService tagService, IGitRepoTagService gitRepoTagService)
         {
             _logger = logger;
-            _repoService = repoService;
-            _userService = userService;
             _tagService = tagService;
             _gitRepoTagService = gitRepoTagService;
         }
@@ -61,15 +60,8 @@ namespace GitTagApp.Pages
                 Repositories = await github.Repository.GetAllForCurrent();
             
                 StarredRepos = await github.Activity.Starring.GetAllForCurrent();
-
+        
                 RepoOptions = StarredRepos.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name
-                    }).ToList();
-                
-                TagOptions = _tagService.GetAll().Select(x =>
                     new SelectListItem
                     {
                         Value = x.Id.ToString(),
@@ -81,7 +73,7 @@ namespace GitTagApp.Pages
         public void OnPostCreate()
         {
             IsPostSuccess = false;
-            
+           
             var tag = new Tag();
             tag.Name = Request.Form["Tag.Name"];
             
@@ -96,33 +88,27 @@ namespace GitTagApp.Pages
                 select t).Single();
             
             var gitRepoTag = new GitRepoTag();
-            gitRepoTag.GitRepoId = Convert.ToInt64(Request.Form["starredRepoId"]);
+            gitRepoTag.GitRepoId = Convert.ToInt64(Request.Form["RepoId"]);
             gitRepoTag.TagId = relatedTag.Id;
             Message = _gitRepoTagService.CreateRepoTag(gitRepoTag);
         }
 
-        public void OnPostUpdate()
+        public JsonResult OnGetPopulate(long id)
         {
-            IsPostSuccess = false;
-            var newTag = new Tag();
-            
-            newTag.Name = Request.Form["Tag.Name"]; // New tag name (from text input)
-            var selectedTag = Convert.ToInt64(Request.Form["tagId"]); // Selected from select (tag to be updated)
-            newTag.Id = selectedTag;
-            var result = _tagService.Update(newTag);
-
-            if (!result.IsNullOrEmpty()) IsPostSuccess = true;
-
-            RedirectToPage("/List");
+            return new JsonResult(GetResponse(id));
         }
 
-        public void OnPostDelete(long id)
+        public IEnumerable<SelectListItem> GetResponse(long id)
         {
-            IsPostSuccess = false;
-
-            var result = _gitRepoTagService.DeleteRepoTag(Convert.ToInt64(Request.Form["tagId"]), Convert.ToInt64(Request.Form["starredRepoId"]));
-
-            if (!result.IsNullOrEmpty()) IsPostSuccess = true;
+            var query = (from rt in _gitRepoTagService.GetAll()
+                join t in _tagService.GetAll() on rt.TagId equals t.Id
+                where rt.GitRepoId == id
+                select new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = t.Name
+                });
+            return query.ToList();
         }
     }
 }

@@ -12,15 +12,20 @@ namespace GitTagApp.Services
             _repository = repository;
         }
 
+        public GitRepoTag GetByIdRepoTag(long repoId, long tagId)
+        {
+            return _repository.GetByIdRepoTag(repoId, tagId);
+        }
+
         public string CreateRepoTag(GitRepoTag gitRepoTag)
         {
             _repository.CreateRepoTag(gitRepoTag);
             return "Item successfully created";
         }
 
-        public string DeleteRepoTag(long tagId, long repoId)
+        public string DeleteRepoTag(long repoId, long tagId)
         {
-            _repository.DeleteRepoTag(tagId, repoId);
+            _repository.DeleteRepoTag(repoId, tagId);
             return "Item successfully deleted.";
         }
         
