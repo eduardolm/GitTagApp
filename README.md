@@ -34,7 +34,7 @@ This project's architecture includes:
  The application is pretty straightforward. No installation required!
  Just open your browser and access the follwing address:
  
- [`<https://gittagapp.azurewebsites.net>`](https://gittagapp.azurewebsites.net)
+ [`https://gittagapp.azurewebsites.net`](https://gittagapp.azurewebsites.net)
  
  Provide Github credentials and sign in.
  
