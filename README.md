@@ -32,7 +32,7 @@ This project's architecture includes:
   
  ## How to use
  The application is pretty straightforward. No installation required!
- Just open your browser and access the follwing address:
+ Just open your browser and access the following address:
  
  [`https://gittagapp.azurewebsites.net`](https://gittagapp.azurewebsites.net)
  
