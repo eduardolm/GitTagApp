@@ -67,7 +67,7 @@ namespace GitTagApp.Pages
                         Id = repo.Id,
                         Name = repo.Name,
                         Description = repo.Description,
-                        HttpUrl = repo.Url,
+                        HttpUrl = repo.HtmlUrl,
                         UserId = dbUser.Id,
                     };
                     _repoService.Create(dbRepo);
