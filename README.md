@@ -36,6 +36,8 @@ This project's architecture includes:
  
  [`https://gittagapp.azurewebsites.net`](https://gittagapp.azurewebsites.net)
  
+ *App was removed from Azure Web Sites and is no longer running online
+ 
  Provide Github credentials and sign in.
  
  #### List repositories
